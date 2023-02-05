@@ -54,7 +54,6 @@
       body,
       .wrapper {
         height: 100%;
-        overscroll-behavior: contain;
       }
 
       .wrapper {
@@ -62,6 +61,7 @@
         --strip-height: 30px;
         grid-template-rows: 1fr var(--strip-height) var(--strip-height) 1fr;
         overflow-x: auto;
+        overscroll-behavior: contain;
       }
 
       .wrapper > * {
