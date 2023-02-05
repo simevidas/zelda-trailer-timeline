@@ -1,0 +1,5 @@
+- improve code: switch to em instead of px?
+- add support for mobile landscape
+- test in all browsers/platforms
+- run it through Nu validator and other tests (Lighthouse, etc.)
+- publish on GitHub Pages (incl. all images) 
