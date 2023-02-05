@@ -1,1 +1,511 @@
-Hello, world!
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Zelda trailer timeline</title>
+    <meta
+      name="description"
+      content="A comparative timeline of the relevant trailers for the two Zelda games 
+               Breath of the Wild and Tears of the Kingdom"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        --day: 3px;
+        --offset: 50px;
+        --header: calc(100vw + var(--offset));
+        --footer: 640px;
+        --bg: transparent;
+        --card-color: #b89f64;
+        --hint: block;
+        --webkit-bug: 15ch;
+
+        font-family: system-ui;
+        background: var(--bg);
+      }
+
+      @media (min-width: 640px) {
+        html {
+          --header: 50vw;
+          --hint: none;
+        }
+      }
+
+      .visually-hidden {
+        border: 0;
+        clip: rect(0, 0, 0, 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+
+      html,
+      body,
+      .wrapper {
+        height: 100%;
+        overscroll-behavior: contain;
+      }
+
+      .wrapper {
+        display: grid;
+        --strip-height: 30px;
+        grid-template-rows: 1fr var(--strip-height) var(--strip-height) 1fr;
+        overflow-x: auto;
+      }
+
+      .wrapper > * {
+        grid-column: 1;
+      }
+
+      .logo {
+        display: grid;
+        width: var(--header);
+        justify-content: center;
+      }
+
+      .logo.a {
+        grid-row: 1;
+        align-self: end;
+      }
+
+      .logo.b {
+        grid-row: 4;
+        align-self: start;
+      }
+
+      .logo img {
+        display: block;
+      }
+
+      .logo.a img {
+        margin-right: 30px;
+      }
+
+      .logo.b img {
+        margin-right: 55px;
+      }
+
+      .title {
+        grid-row: 1;
+        align-self: end;
+        justify-self: end;
+        padding: 0.3em 0.6em;
+      }
+
+      .title > * {
+        display: inline-block;
+        font-style: italic;
+      }
+
+      .title h1 {
+        font-size: inherit;
+        font-weight: normal;
+      }
+
+      .title a {
+        color: #9c6e21;
+        text-underline-offset: 0.08em;
+        text-decoration-thickness: 0.08em;
+      }
+
+      .hint {
+        display: var(--hint);
+        grid-row: 1;
+        align-self: end;
+        margin-left: calc(100vw - 5em);
+        margin-bottom: 0.3em;
+      }
+
+      .hint p {
+        animation: 1s fade-in 3s both;
+        font-style: italic;
+        font-size: 1em;
+        max-width: var(--webkit-bug);
+      }
+
+      @keyframes fade-in {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .annotation {
+        grid-row: 1 / span 5;
+        align-self: stretch;
+        margin-left: var(--header);
+        margin-right: var(--footer);
+      }
+
+      .annotation ol {
+        display: flex;
+        height: 100%;
+        color: crimson;
+      }
+
+      .annotation li {
+        font-style: italic;
+        list-style-type: none;
+        width: calc(var(--day) * 365);
+        border-left: 3px solid crimson;
+        --month: calc(var(--day) * 30.5 - 1px);
+        --line: calc(var(--day) * 30.5);
+        --linecol: #dc143c33;
+        background: repeating-linear-gradient(
+          to right,
+          var(--bg),
+          var(--bg) var(--month),
+          var(--linecol) var(--month),
+          var(--linecol) var(--line)
+        );
+      }
+
+      .annotation li:last-child {
+        width: calc(var(--day) * 20);
+      }
+
+      .annotation li::before {
+        content: '⤺';
+        font-size: 1.5em;
+        margin-inline: 0.3ch;
+      }
+
+      .today {
+        --img-size: 40px;
+        --days0: calc(365 * 4 - var(--days, 0));
+        grid-row: 4;
+        grid-column: 1;
+        align-self: end;
+        margin-left: calc(
+          var(--header) - var(--img-size) / 2 + var(--days0) * var(--day)
+        );
+      }
+
+      .today img {
+        vertical-align: middle;
+        width: var(--img-size);
+        height: var(--img-size);
+      }
+
+      .today span {
+        display: inline-block;
+        max-width: var(--webkit-bug);
+        font-style: italic;
+      }
+
+      .timeline {
+        display: flex;
+        padding-left: var(--header);
+        --mix-color: #25cac2;
+      }
+
+      .timeline.a {
+        --color: #00bfe7;
+        --text-color: #00a1cf;
+        --position: -190px;
+        --adjustment: 2px;
+        --torigin: bottom;
+
+        background: linear-gradient(var(--color), var(--mix-color));
+        grid-row: 2;
+      }
+
+      .timeline.b {
+        --color: #4ad69e;
+        --text-color: #06ab5f;
+        --position: 50px;
+        --adjustment: 11px;
+        --torigin: top;
+
+        background: linear-gradient(var(--mix-color), var(--color));
+        grid-row: 3;
+      }
+
+      .timeline ol {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .timeline li {
+        --days0: calc(365 * 4 - var(--days));
+        grid-column: 1;
+        grid-row: 1;
+        margin-left: calc(var(--days0) * var(--day) - 5px + var(--move, 0px));
+        list-style-type: none;
+        position: relative;
+      }
+
+      .timeline li::before {
+        content: '';
+        display: inline-block;
+        width: 0.8em;
+        height: 0.8em;
+        margin-left: 5px;
+        margin-top: 0.5em;
+        background: var(--card-color);
+        border-radius: 50%;
+        box-shadow: 0 0 10px 2px white;
+      }
+
+      .timeline li::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        left: 10px;
+        top: calc(var(--position) / 2 - var(--adjustment));
+        height: 110px;
+        border-left: 3px solid var(--card-color);
+        z-index: 0;
+        transform: rotate(var(--angle, 0deg));
+        transform-origin: var(--torigin);
+      }
+
+      .card {
+        width: 220px;
+        position: absolute;
+        top: var(--position);
+        left: var(--left, -95px);
+        text-align: center;
+        background: #f1ece0;
+        z-index: 1;
+        border-radius: 9px;
+        border: 1.5px solid var(--card-color);
+        box-shadow: 0 0 20px #ccc;
+      }
+
+      .card :is(a, img) {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        border-radius: 7px;
+      }
+
+      .card p {
+        padding-bottom: 0.3em;
+      }
+
+      h3 {
+        font-size: inherit;
+        margin-top: 0.3ch;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 
+TODO:
+- improve code: switch to em instead of px?
+- add support for mobile landscape
+- test in all browsers/platforms
+- run it through Nu validator and other tests (Lighthouse, etc.)
+- publish on GitHub Pages (incl. all images) 
+-->
+
+    <div class="wrapper">
+      <div class="logo a">
+        <img
+          src="/assets/botw.png"
+          height="200"
+          alt="A dark gold flower with two buds, one open and one closed, taken 
+               from logo of Breath of the Wild"
+        />
+      </div>
+
+      <div class="logo b">
+        <img
+          src="/assets/tears.png"
+          height="215"
+          alt="An abstract drawing of a sword’s blade with green lines in the style of a maze, 
+               taken from the logo of Tears of the Kingdom"
+        />
+      </div>
+
+      <div class="title">
+        <h1>Zelda trailer timeline</h1>
+        <p>by <a href="https://mastodon.social/@simevidas">Šime Vidas</a></p>
+      </div>
+
+      <div class="hint">
+        <p>scroll →</p>
+      </div>
+
+      <div class="timeline a">
+        <h2 class="visually-hidden">Breath of the Wild</h2>
+        <ol>
+          <li style="--days: 997">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=XZmxvig1dXE">
+                <img src="/assets/Zedy6pe.png" alt="Watch on YouTube" />
+              </a>
+              <h3>E3 cinematic teaser</h3>
+              <p>June 2014</p>
+            </div>
+          </li>
+          <li style="--days: 818">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=ypR03D1nISA">
+                <img src="/assets/6upyfie.png" alt="Watch on YouTube" />
+              </a>
+              <h3>TGA gameplay showcase</h3>
+              <p>December 2014</p>
+            </div>
+          </li>
+          <li style="--days: 707">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=BVlSsmlPejY">
+                <img src="/assets/kEyohah.png" alt="Watch on YouTube" />
+              </a>
+              <h3>Development update</h3>
+              <p>March 2015</p>
+            </div>
+          </li>
+          <li style="--days: 262">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=1rPxiXXxftE">
+                <img src="/assets/M2x6zIR.png" alt="Watch on YouTube" />
+              </a>
+              <h3>E3 trailer</h3>
+              <p>June 2016</p>
+            </div>
+          </li>
+          <li style="--days: 91; --left: -200px; --angle: -40deg">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=vDFZIUdo764">
+                <img src="/assets/H6DKTca.png" alt="Watch on YouTube" />
+              </a>
+              <h3>“Life in the ruins” trailer</h3>
+              <p>December 2016</p>
+            </div>
+          </li>
+          <li style="--days: 49">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=zw47_q9wbBE">
+                <img src="/assets/Gbvgdbk.png" alt="Watch on YouTube" />
+              </a>
+              <h3>Switch Presentation trailer</h3>
+              <p>January 2017</p>
+            </div>
+          </li>
+          <li style="--days: 23; --left: 57px; --angle: 53deg">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=pdkvbsI4fEc">
+                <img src="/assets/6mOwCzc.png" alt="Watch on YouTube" />
+              </a>
+              <h3>“Guard, in destiny” trailer</h3>
+              <p>February 2017</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="timeline b">
+        <h2 class="visually-hidden">Tears of the Kingdom</h2>
+        <ol>
+          <li style="--days: 1431">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=3fr1Z07AV00">
+                <img src="/assets/CPzE0Co.png" alt="Watch on YouTube" />
+              </a>
+              <h3>E3 teaser</h3>
+              <p>June 2019</p>
+            </div>
+          </li>
+          <li style="--days: 696">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=Pi-MRZBP91I">
+                <img src="/assets/AhrfhJb.png" alt="Watch on YouTube" />
+              </a>
+              <h3>E3 trailer</h3>
+              <p>June 2021</p>
+            </div>
+          </li>
+          <li style="--days: 409">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=f_vgseuw_o8">
+                <img src="/assets/I9UxOQt.png" alt="Watch on YouTube" />
+              </a>
+              <h3>Launch timing update</h3>
+              <p>March 2022</p>
+            </div>
+          </li>
+          <li style="--days: 241">
+            <div class="card">
+              <a href="https://www.youtube.com/watch?v=2SNF4M_v7wc">
+                <img src="/assets/h5qOJ5q.png" alt="Watch on YouTube" />
+              </a>
+              <h3>Nintendo Direct trailer</h3>
+              <p>September 2022</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="annotation">
+        <ol>
+          <li>4 years until release</li>
+          <li>3 years</li>
+          <li>2 years</li>
+          <li>1 year</li>
+          <li>Release</li>
+        </ol>
+      </div>
+
+      <div class="today">
+        <img
+          src="/assets/NES-Link-sprite.gif"
+          width="32"
+          height="32"
+          alt="Pixel sprite of the character Link from the NES game Zelda"
+        />
+        <span></span>
+      </div>
+    </div>
+    <script>
+      {
+        // place Link sprite marker at correct position on timeline
+
+        let today = document.querySelector('.today');
+        let delta =
+          new Date('2023-05-12T12:00').getTime() - new Date().getTime();
+        let days = Math.floor(delta / (1000 * 3600 * 24));
+
+        today.style.setProperty('--days', days);
+        today.querySelector('span').textContent = `${days} days to go`;
+      }
+
+      {
+        // hide the “scroll” hint as soon as the user scrolls the logos out of view
+
+        let observer = new IntersectionObserver(
+          (entries) => {
+            for (let entry of entries) {
+              if (entry.intersectionRatio === 0) {
+                document.documentElement.style.setProperty('--hint', 'none');
+              }
+            }
+          },
+          {
+            root: document.documentElement,
+            rootMargin: '0px',
+            threshold: 0,
+          }
+        );
+
+        observer.observe(document.querySelector('.logo'));
+      }
+    </script>
+  </body>
+</html>
