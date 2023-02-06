@@ -511,11 +511,13 @@
       {
         // place Link sprite marker at correct position on timeline
 
-        let today = document.querySelector('.today');
-        let delta =
-          new Date('2023-05-12T12:00').getTime() - new Date().getTime();
-        let days = Math.floor(delta / (1000 * 3600 * 24));
+        let local = new Date();
+        let midnight0 = +new Date('2023-05-12T00:00:00Z');
+        let midnight = midnight0 + local.getTimezoneOffset() * 60 * 1000;
+        let delta = (midnight0 - Number(local)) / (24 * 60 * 60 * 1000);
+        let days = Math.max(Math.ceil(delta), 0);
 
+        let today = document.querySelector('.today');
         today.style.setProperty('--days', days);
         today.querySelector('span').textContent = `${days} days to go`;
       }
