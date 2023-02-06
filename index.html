@@ -514,6 +514,13 @@
 
         observer.observe(document.querySelector('.logo'));
       }
+
+      // make mouse wheel scroll horizontally
+      document.addEventListener('wheel', (e) => {
+        if (Math.abs(e.wheelDeltaY) === 120) {
+          document.scrollingElement.scrollBy(-e.wheelDeltaY, 0);
+        }
+      });
     </script>
   </body>
 </html>
