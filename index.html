@@ -515,12 +515,19 @@
         observer.observe(document.querySelector('.logo'));
       }
 
-      // make mouse wheel scroll horizontally
-      document.addEventListener('wheel', (e) => {
-        if (Math.abs(e.wheelDeltaY) === 120) {
-          document.scrollingElement.scrollBy(-e.wheelDeltaY, 0);
-        }
-      });
+      {
+        // make mouse wheel scroll horizontally
+        let wrapper = document.querySelector('.wrapper');
+        document.addEventListener(
+          'wheel',
+          (e) => {
+            if (Math.abs(e.wheelDeltaY) === 120) {
+              wrapper.scrollBy(-e.wheelDeltaY, 0);
+            }
+          },
+          { passive: true }
+        );
+      }
     </script>
   </body>
 </html>
